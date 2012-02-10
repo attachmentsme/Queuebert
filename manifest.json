@@ -1,0 +1,19 @@
+{
+  "name": "Queuebert",
+  "version": "0.0.1",
+  "description": "A queue for communicating between iframes and background.html in your chrome extension.",
+  "background_page" : "example/background.html",
+  "page_action": {},
+  "icons": {},
+  "permissions": ["tabs"],
+  "content_scripts": [
+    {
+        "matches": ["http://*/", "https://*/"],
+        "js": [
+            "lib/client.js",
+            "example/content-script.js"
+        ],
+        "all_frames": false
+    }
+  ]
+}
