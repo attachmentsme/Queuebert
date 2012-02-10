@@ -18,7 +18,7 @@ exports.tests = {
 		var server = new Server({
 			onRequest: {
 				addListener: function(fn) {
-					fn({identifier: 'client_identifier'}, {tab: { id: 1 } });
+					fn({to: 'client_identifier'}, {tab: { id: 1 } });
 				}
 			}
 		});
@@ -26,16 +26,28 @@ exports.tests = {
 		finished();
 	},
 	
+	'two different client ids should not cause messages queue to reset': function(finished, prefix) {
+		var server = new Server({
+			onRequest: {
+				addListener: function(fn) {
+					fn({to: 'to_identifier', from: 'from_identifier'}, {tab: { id: 1 } });
+				}
+			}
+		});
+		equal(typeof(server.messages['tab_1']['to_identifier']), 'object', prefix + ' messages queue was reset.');
+		finished();
+	},
+	
 	'should not reset client message queue each time a client provides a message': function(finished, prefix) {
 		var server = new Server({
 			onRequest: {
 				addListener: function(fn) {
-					fn({identifier: 'client_identifier', type: 'put'}, {tab: { id: 1 } });
+					fn({to: 'client_identifier', type: 'put'}, {tab: { id: 1 } });
 				}
 			}
 		});
 		
-		server.handleMessage({identifier: 'client_identifier', type: 'put'}, {tab: { id: 1 } });
+		server.handleMessage({to: 'client_identifier', type: 'put'}, {tab: { id: 1 } });
 		equal(server.messages['tab_1']['client_identifier'].length, 2, prefix + ' messages should have two messages in it');
 		finished();
 	},
@@ -46,7 +58,7 @@ exports.tests = {
 				addListener: function(fn) {}
 			}
 		});
-		server.handleMessage({identifier: 'recipient_identifier', body: {foo: 'bar'}, type: 'put'}, {tab: {id: 1}});
+		server.handleMessage({to: 'recipient_identifier', body: {foo: 'bar'}, type: 'put'}, {tab: {id: 1}});
 		equal(server.messages['tab_1']['recipient_identifier'][0].foo, 'bar', prefix + ' foo was not equal to bar.');
 		finished();
 	},
@@ -57,8 +69,8 @@ exports.tests = {
 				addListener: function(fn) {}
 			}
 		});
-		server.handleMessage({identifier: 'recipient_identifier', body: {foo: 'bar'}, type: 'put'}, {tab: {id: 1}});
-		server.handleMessage({identifier: 'recipient_identifier', type: 'get'}, {tab: {id: 1}}, function(msg) {
+		server.handleMessage({to: 'recipient_identifier', body: {foo: 'bar'}, type: 'put'}, {tab: {id: 1}});
+		server.handleMessage({_for: 'recipient_identifier', type: 'get'}, {tab: {id: 1}}, function(msg) {
 			equal(msg.foo, 'bar', prefix + ' foo was not equal to bar.');
 			finished();
 		});
@@ -70,7 +82,7 @@ exports.tests = {
 				addListener: function(fn) {}
 			}
 		});
-		server.handleMessage({identifier: 'recipient_identifier', type: 'get'}, {tab: {id: 1}}, function(msg) {
+		server.handleMessage({to: 'recipient_identifier', type: 'get'}, {tab: {id: 1}}, function(msg) {
 			equal(undefined, msg, prefix + ' msg should be undefined.');
 			finished();
 		});	
