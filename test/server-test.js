@@ -59,7 +59,7 @@ exports.tests = {
 			}
 		});
 		server.handleMessage({to: 'recipient_identifier', body: {foo: 'bar'}, type: 'put'}, {tab: {id: 1}});
-		equal(server.messages['tab_1']['recipient_identifier'][0].foo, 'bar', prefix + ' foo was not equal to bar.');
+		equal(server.messages['tab_1']['recipient_identifier'][0].body.foo, 'bar', prefix + ' foo was not equal to bar.');
 		finished();
 	},
 	
@@ -69,9 +69,10 @@ exports.tests = {
 				addListener: function(fn) {}
 			}
 		});
-		server.handleMessage({to: 'recipient_identifier', body: {foo: 'bar'}, type: 'put'}, {tab: {id: 1}});
-		server.handleMessage({_for: 'recipient_identifier', type: 'get'}, {tab: {id: 1}}, function(msg) {
-			equal(msg.foo, 'bar', prefix + ' foo was not equal to bar.');
+		server.handleMessage({to: 'recipient_identifier', body: {foo: 'bar'}, type: 'put', from: 'sender_identifier'}, {tab: {id: 1}});
+		server.handleMessage({from: 'recipient_identifier', type: 'get'}, {tab: {id: 1}}, function(clientId, body) {
+			equal(clientId, 'sender_identifier', prefix + ' recipient id not correct.');
+			equal(body.foo, 'bar', prefix + ' foo was not equal to bar.');
 			finished();
 		});
 	},
@@ -82,9 +83,10 @@ exports.tests = {
 				addListener: function(fn) {}
 			}
 		});
-		server.handleMessage({to: 'recipient_identifier', type: 'get'}, {tab: {id: 1}}, function(msg) {
-			equal(undefined, msg, prefix + ' msg should be undefined.');
+		server.handleMessage({to: 'recipient_identifier', type: 'get'}, {tab: {id: 1}}, function(clientId, body) {
+			equal(null, body, prefix + ' body should be null.');
 			finished();
 		});	
+		finished();
 	}
 };

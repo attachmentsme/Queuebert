@@ -20,7 +20,7 @@ exports.tests = {
 			sendRequest: function(params, callback) {
 				equal(params.type, 'put', prefix + ' type was not put.');
 				equal(params.to, 'client_identifier', prefix + ' client identifier not set');
-				equal(params._from, 'client_identifier', prefix + ' from should be set');
+				equal(params.from, 'client_identifier', prefix + ' from should be set');
 				equal(params.body.foo, 'bar', prefix + ' foo was not equal to bar');
 				equal(params.action, 'upload', prefix + ' upload action was not set');
 				finished();
@@ -36,9 +36,11 @@ exports.tests = {
 	},
 	
 	'client should receive messages on a set interval': function(finished, prefix) {
-/*		var clientDelegate = {
-			upload: function(senderId, params) {
-				
+		/*var clientDelegate = {
+			upload: function(senderId, body) {
+				equal(senderId, 'client_identifier', prefix +  ' senderId not set.');
+				equal(body.foo, 'bar', prefix + ' foo not equal to bar.');
+				finished();
 			}
 		}
 		var client = new Client({
@@ -50,7 +52,13 @@ exports.tests = {
 				});
 			}
 		});
-		client.sendMessage('upload', {foo: 'bar'});*/
+		client.sendMessage({
+			to: 'client_identifier',
+			action: 'upload',
+			body: {
+				foo: 'bar'
+			}
+		});*/
 		finished();
 	}
 }
