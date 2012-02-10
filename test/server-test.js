@@ -71,6 +71,7 @@ exports.tests = {
 		});
 		server.handleMessage({to: 'recipient_identifier', body: {foo: 'bar'}, type: 'put', from: 'sender_identifier'}, {tab: {id: 1}});
 		server.handleMessage({from: 'recipient_identifier', type: 'get'}, {tab: {id: 1}}, function(rawMessage) {
+			equal(rawMessage.tabId, 'tab_1', prefix + ' tab id was not passed back in raw message.');
 			equal(rawMessage.from, 'sender_identifier', prefix + ' recipient id not correct.');
 			equal(rawMessage.body.foo, 'bar', prefix + ' foo was not equal to bar.');
 			finished();
@@ -88,5 +89,20 @@ exports.tests = {
 			finished();
 		});	
 		finished();
+	},
+	
+	'you should be able to deliver a message to an arbitrary tabId': function(finished, prefix) {
+		var server = new Server({
+			onRequest: {
+				addListener: function(fn) {}
+			}
+		});
+		server.handleMessage({tabId: 'tab_2', to: 'recipient_identifier', body: {foo: 'bar'}, type: 'put', from: 'sender_identifier'}, {tab: {id: 1}});
+		server.handleMessage({from: 'recipient_identifier', type: 'get', tabId: 'tab_2'}, {tab: {id: 1}}, function(rawMessage) {
+			equal(rawMessage.tabId, 'tab_2', prefix + ' tab id was not passed back in raw message.');
+			equal(rawMessage.from, 'sender_identifier', prefix + ' recipient id not correct.');
+			equal(rawMessage.body.foo, 'bar', prefix + ' foo was not equal to bar.');
+			finished();
+		});
 	}
 };

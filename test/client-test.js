@@ -20,6 +20,7 @@ exports.tests = {
 			identifier: 'client_identifier',
 			start: false,
 			sendRequest: function(params, callback) {
+				equal(params.tabId, 'tab_2', prefix + ' tabId was not set.');
 				equal(params.type, 'put', prefix + ' type was not put.');
 				equal(params.to, 'client_identifier', prefix + ' client identifier not set');
 				equal(params.from, 'client_identifier', prefix + ' from should be set');
@@ -29,6 +30,7 @@ exports.tests = {
 			}
 		});
 		client.sendMessage( {
+			tabId: 'tab_2',
 			to: 'client_identifier',
 			action: 'upload',
 			body: {
@@ -41,7 +43,8 @@ exports.tests = {
 		var fin = false;
 		
 		var clientDelegate = {
-			upload: function(senderId, body) {
+			upload: function(senderId, senderTabId, body) {
+				equal(senderTabId, 'tab_1', prefix +  ' senderId not set.');
 				equal(senderId, 'client_identifier', prefix +  ' senderId not set.');
 				equal(body.foo, 'bar', prefix + ' foo not equal to bar.');
 				if (!fin) {
@@ -53,10 +56,14 @@ exports.tests = {
 		new Client({
 			delegate: clientDelegate,
 			identifier: 'client_identifier',
-			start: false,
 			sendRequest: function(params, callback) {
-				callback('upload', 'client_identifier', {foo: 'bar'});
+				callback({
+					action: 'upload',
+					from: 'client_identifier',
+					tabId: 'tab_1',
+					body: {foo: 'bar'}
+				});
 			}
-		}).start();
+		});
 	}
 }

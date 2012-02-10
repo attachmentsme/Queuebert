@@ -1,7 +1,8 @@
 var puts = require('util').puts,
 	tests = [],
 	serverTests = require('./server-test'),
-	clientTests = require('./client-test');
+	clientTests = require('./client-test'),
+	backgroundClientTests = require('./background-client-test');
 	 
 function run(callback, test) {
 	callback(
@@ -36,5 +37,6 @@ function addTests(testsObject) {
 
 addTests(serverTests.tests);
 addTests(clientTests.tests);
+addTests(backgroundClientTests.tests);
 tests.shift()();
 setTimeout(function() {}, 30000);

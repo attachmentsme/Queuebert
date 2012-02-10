@@ -3,12 +3,12 @@ var delegate = {
 		console.log(body.message);
 	}
 };
-
+/*
 var client = new Queuebert.Client({
 	identifier: 'client',
 	delegate: delegate
-});
-
+});*/
+/*
 setInterval(function() {
 	client.sendMessage({
 		action: 'receivedMessage',
@@ -16,3 +16,4 @@ setInterval(function() {
 		body: {message: 'Hello World!'}
 	});
 }, 1000);
+*/

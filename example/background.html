@@ -5,6 +5,17 @@
 		<script src="../lib/client.js"></script>
 		<script type="text/javascript">
 			var server = new Queuebert.Server();
+			
+			var delegate = {
+				receivedMessage: function(clientId, body) {
+					console.log(body.message);
+				}
+			};
+
+			var client = new Queuebert.Client({
+				identifier: 'background',
+				delegate: delegate
+			});
 		</script>
 	</head>
 	<body>
