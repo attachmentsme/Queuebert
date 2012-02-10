@@ -6,6 +6,7 @@ exports.tests = {
 	'should override default sendRequest object with one passed in': function(finished, prefix) {
 		var client = new Client({
 			identifier: 'client_identifier',
+			start: false,
 			sendRequest: function(params, callback) {
 				equal(true, true);
 				finished();
@@ -17,6 +18,7 @@ exports.tests = {
 	'send message should invoke sendRequest with the appropriate parameters': function(finished, prefix) {
 		var client = new Client({
 			identifier: 'client_identifier',
+			start: false,
 			sendRequest: function(params, callback) {
 				equal(params.type, 'put', prefix + ' type was not put.');
 				equal(params.to, 'client_identifier', prefix + ' client identifier not set');
@@ -51,6 +53,7 @@ exports.tests = {
 		new Client({
 			delegate: clientDelegate,
 			identifier: 'client_identifier',
+			start: false,
 			sendRequest: function(params, callback) {
 				callback('upload', 'client_identifier', {foo: 'bar'});
 			}
