@@ -70,7 +70,7 @@ exports.tests = {
 			}
 		});
 		server.handleMessage({to: 'recipient_identifier', body: {foo: 'bar'}, type: 'put', from: 'sender_identifier'}, {tab: {id: 1}});
-		server.handleMessage({from: 'recipient_identifier', type: 'get'}, {tab: {id: 1}}, function(clientId, body) {
+		server.handleMessage({from: 'recipient_identifier', type: 'get'}, {tab: {id: 1}}, function(action, clientId, body) {
 			equal(clientId, 'sender_identifier', prefix + ' recipient id not correct.');
 			equal(body.foo, 'bar', prefix + ' foo was not equal to bar.');
 			finished();
@@ -83,7 +83,7 @@ exports.tests = {
 				addListener: function(fn) {}
 			}
 		});
-		server.handleMessage({to: 'recipient_identifier', type: 'get'}, {tab: {id: 1}}, function(clientId, body) {
+		server.handleMessage({to: 'recipient_identifier', type: 'get'}, {tab: {id: 1}}, function(action, clientId, body) {
 			equal(null, body, prefix + ' body should be null.');
 			finished();
 		});	

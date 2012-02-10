@@ -36,29 +36,24 @@ exports.tests = {
 	},
 	
 	'client should receive messages on a set interval': function(finished, prefix) {
-		/*var clientDelegate = {
+		var fin = false;
+		
+		var clientDelegate = {
 			upload: function(senderId, body) {
 				equal(senderId, 'client_identifier', prefix +  ' senderId not set.');
 				equal(body.foo, 'bar', prefix + ' foo not equal to bar.');
-				finished();
+				if (!fin) {
+					fin = true;
+					finished();
+				}
 			}
 		}
-		var client = new Client({
+		new Client({
 			delegate: clientDelegate,
 			identifier: 'client_identifier',
 			sendRequest: function(params, callback) {
-				callback({
-					
-				});
+				callback('upload', 'client_identifier', {foo: 'bar'});
 			}
-		});
-		client.sendMessage({
-			to: 'client_identifier',
-			action: 'upload',
-			body: {
-				foo: 'bar'
-			}
-		});*/
-		finished();
+		}).start();
 	}
 }

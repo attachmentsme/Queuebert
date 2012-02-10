@@ -8,12 +8,16 @@ function run(callback, test) {
 		function() {
 			puts(test + ' \033[32m[Success]\033[m');
 			if (tests.length == 0) {
-			    puts(' \033[32mAll tests finished.\033[m');
-			    process.exit();
+				setTimeout(function() {
+			  	puts(' \033[32mAll tests finished.\033[m');
+					process.exit();
+				}, 500);
 			}
 			
 			var nextTest = tests.shift();
-			nextTest();
+			if (nextTest) {
+				nextTest();
+			}
 			
 		},
 		test + ': '
