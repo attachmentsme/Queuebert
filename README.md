@@ -1,6 +1,8 @@
 Queuebert
 =========
 
+![Queuebert](https://github.com/attachmentsme/Queuebert/raw/master/images/queuebert.png)
+
 The Chrome extension paradigm is sandboxed. iframes and browser-tabs cannot directly communicate with each other. They must use a background script to mediate communication between them.
 
 In a prior post, I advocate using a queue-based approach to deal with this annoyance:
