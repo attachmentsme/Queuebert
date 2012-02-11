@@ -1,19 +1,19 @@
 var delegate = {
-	receivedMessage: function(clientId, body) {
+	receivedMessage: function(clientId, clientTabId, body) {
 		console.log(body.message);
 	}
 };
-/*
+
 var client = new Queuebert.Client({
 	identifier: 'client',
 	delegate: delegate
-});*/
-/*
+});
+
 setInterval(function() {
 	client.sendMessage({
 		action: 'receivedMessage',
-		to: 'client',
-		body: {message: 'Hello World!'}
+		tabId: 'background',
+		to: 'background',
+		body: {message: 'Content Script: Hello World!'}
 	});
 }, 1000);
-*/

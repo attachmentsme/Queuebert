@@ -3,19 +3,29 @@
 	<head>
 		<script src="../lib/server.js"></script>
 		<script src="../lib/client.js"></script>
+		<script src="../lib/background-client.js"></script>
 		<script type="text/javascript">
-			var server = new Queuebert.Server();
+			var background = {};
 			
-			var delegate = {
-				receivedMessage: function(clientId, body) {
-					console.log(body.message);
+			background.server = new Queuebert.Server();
+			
+			background.delegate = {
+				receivedMessage: function(clientId, clientTabId, body) {
+					console.log('[' + clientTabId + ']' + body.message);
+					background.client.sendMessage({
+						action: 'receivedMessage',
+						tabId: clientTabId,
+						to: clientId,
+						body: {message: 'Background Script: Hey, how goes it?!'}
+					});
 				}
 			};
 
-			var client = new Queuebert.Client({
-				identifier: 'background',
-				delegate: delegate
+			background.client = new Queuebert.BackgroundClient({
+				delegate: background.delegate,
+				server: background.server
 			});
+			
 		</script>
 	</head>
 	<body>
