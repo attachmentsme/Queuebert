@@ -75,7 +75,7 @@ var client = new Queuebert.BackgroundClient({
 });
 ```
 
-* _delegate_ this is identical to the delegates discussed previously.
+* _delegate_ the delegate provided to a background client is identical to a delegate provided to other clients.
 * _server_ a BackgroundClient requires that the _Server_ instance be provided as a dependency.
 
 *Sending a Message to a BackgroundClient*
