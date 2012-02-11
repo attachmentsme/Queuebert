@@ -34,7 +34,7 @@ var client = new Queuebert.Client({
 });
 ```
 * _identifier_ a tab with multiple iframes within it can potentially run multiple clients. The _identifier_ is used to differentiate these clients.
-* _delegate_ The client automatically checks for inbound messages on a set interval. Messages are automatically dispatched to the delegate.
+* _delegate_ the client automatically checks for inbound messages on a set interval. Messages are automatically dispatched to the delegate.
 
 *Example Delegate*
 
