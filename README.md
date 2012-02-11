@@ -1,7 +1,7 @@
 Queuebert
 =========
 
-In the chrome extension paradigm, iframes and tabs cannot communicate directly.
+The Chrome extension paradigm is sandboxed. iframes and browser-tabs cannot directly communicate with each other. They must use a background script to mediate communication between them.
 
 In a prior post, I advocate using a queue-based approach to deal with this annoyance:
 
@@ -22,7 +22,7 @@ var server = new Queuebert.Server();
 Client
 ------
 
-You create a client within a content script:
+You create a client within your content scripts. The client is used to communicate between the sandboxed JavaScript environments.
 
 * The client is used to dispatch messages to other tabs, iframes, and to the background script.
 * The client has a delegate registered with it. The delegate receives messages from other clients in the system.
@@ -33,8 +33,8 @@ var client = new Queuebert.Client({
 	delegate: delegate
 });
 ```
-* _identifier_ A tab with multiple iframes within it can potentially run multiple clients. The _identifier_ is used to differentiate these clients.
-* _delegate_ The client automatically checks for messages intended for it on a set interval. Messages are automatically dispatched to the delegate.
+* _identifier_ a tab with multiple iframes within it can potentially run multiple clients. The _identifier_ is used to differentiate these clients.
+* _delegate_ The client automatically checks for inbound messages on a set interval. Messages are automatically dispatched to the delegate.
 
 *Example Delegate*
 
@@ -46,7 +46,7 @@ var delegate = {
 };
 ```
 
-The receivedMessage message method will be executed if the following message was dispatched by another client:
+The _receivedMessage_ message method will be executed if the following message was dispatched by another client:
 
 ```javascript
 client.sendMessage({
@@ -62,7 +62,7 @@ The _clientId_ and _clientTabId_ variables can be used to dispatch a message bac
 BackgroundClient
 ----------------
 
-To keep the queue-based paradigm consistent, you can create an instance of a _BackgroundClient_ in your background script.
+To keep the queue-based paradigm consistent, you can create an instance of a _BackgroundClient_ in your _background.html_.
 
 The behaviour of a background client is identical to clients in content scripts except, seeing as the background script has no _tab.id_, background clients have the special _tab.id_ _background_.
 
@@ -75,7 +75,7 @@ var client = new Queuebert.BackgroundClient({
 });
 ```
 
-* _delegate_ this is identical to the delegates discusses previously.
+* _delegate_ this is identical to the delegates discussed previously.
 * _server_ a BackgroundClient requires that the _Server_ instance be provided as a dependency.
 
 *Sending a Message to a BackgroundClient*
@@ -88,3 +88,20 @@ client.sendMessage({
 	body: {message: 'Hello World!'}
 });
 ```
+
+The Example
+-----------
+
+In the _/example_ folder, there are examples of each of the concepts discussed.
+
+The _Queuebert_ project is a fully functional Chrome Extension. Install it, to see things in action.
+
+Testing
+-------
+
+Queuebert uses node.js for unit testing. run _node test/index.js_ to execute the test suite.
+
+Copyright
+---------
+
+Copyright (c) 2011 Attachments.me. See LICENSE.txt for further details.
