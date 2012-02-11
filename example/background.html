@@ -10,12 +10,12 @@
 			background.server = new Queuebert.Server();
 			
 			background.delegate = {
-				receivedMessage: function(clientId, clientTabId, body) {
+				echo: function(clientId, clientTabId, body) {
 					background.client.sendMessage({
 						action: 'receivedMessage',
 						tabId: clientTabId,
 						to: clientId,
-						body: {message: 'Hey ' + clientTabId}
+						body: {message: '[clientId: ' + clientId + ' clientTabId: ' + clientTabId + '] ' + body.message}
 					});
 				},
 				

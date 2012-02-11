@@ -11,10 +11,10 @@ var client = new Queuebert.Client({
 
 setInterval(function() {
 	client.sendMessage({
-		action: 'receivedMessage',
+		action: 'echo',
 		tabId: 'background',
 		to: 'background',
-		body: {message: 'Content Script: Hello World!'}
+		body: {message: 'Hello World!'}
 	});
 }, 2000);
 
