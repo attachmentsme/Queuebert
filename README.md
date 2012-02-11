@@ -49,7 +49,7 @@ var delegate = {
 };
 ```
 
-The received message method will be executed if the following message is received:
+The receivedMessage message method will be executed if the following message is received:
 
 ```javascript
 client.sendMessage({
