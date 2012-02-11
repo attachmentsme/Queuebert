@@ -16,4 +16,13 @@ setInterval(function() {
 		to: 'background',
 		body: {message: 'Content Script: Hello World!'}
 	});
-}, 1000);
+}, 2000);
+
+setInterval(function() {
+	client.sendMessage({
+		action: 'add',
+		tabId: 'background',
+		to: 'background2',
+		body: {x: 5, y: 20}
+	});
+}, 4000);

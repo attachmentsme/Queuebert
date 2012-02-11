@@ -11,17 +11,31 @@
 			
 			background.delegate = {
 				receivedMessage: function(clientId, clientTabId, body) {
-					console.log('[' + clientTabId + ']' + body.message);
 					background.client.sendMessage({
 						action: 'receivedMessage',
 						tabId: clientTabId,
 						to: clientId,
-						body: {message: 'Background Script: Hey, how goes it?!'}
+						body: {message: 'Hey ' + clientTabId}
+					});
+				},
+				
+				add: function(clientId, clientTabId, body) {
+					background.client.sendMessage({
+						action: 'receivedMessage',
+						tabId: clientTabId,
+						to: clientId,
+						body: {message: 'x + y = ' + (body.x + body.y)}
 					});
 				}
 			};
 
 			background.client = new Queuebert.BackgroundClient({
+				delegate: background.delegate,
+				server: background.server
+			});
+			
+			background.client = new Queuebert.BackgroundClient({
+				identifier: 'background2',
 				delegate: background.delegate,
 				server: background.server
 			});
