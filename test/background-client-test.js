@@ -24,5 +24,25 @@ exports.tests = {
 			action: 'upload',
 			body: {foo: 'bar'}
 		});
+	},
+	
+	
+	'message interval set to default value and be able to be overridden.': function(finished, prefix) {
+		var backgroundClient = new BackgroundClient({
+			identifier: 'client_identifier',
+			start: false,
+			sendRequest: function(params, callback) {}
+		});
+		equal(backgroundClient.messageInterval, 150, prefix + ' default messageInterval not set');
+		
+		backgroundClient = new BackgroundClient({
+			messageInterval: 50,
+			identifier: 'client_identifier',
+			start: false,
+			sendRequest: function(params, callback) {}
+		});
+		equal(backgroundClient.messageInterval, 50, prefix + ' default messageInterval not set');
+		
+		finished();
 	}
 };
