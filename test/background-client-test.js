@@ -26,7 +26,6 @@ exports.tests = {
 		});
 	},
 	
-	
 	'message interval set to default value and be able to be overridden.': function(finished, prefix) {
 		var backgroundClient = new BackgroundClient({
 			identifier: 'client_identifier',
