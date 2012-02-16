@@ -104,5 +104,26 @@ exports.tests = {
 			equal(rawMessage.body.foo, 'bar', prefix + ' foo was not equal to bar.');
 			finished();
 		});
+	},
+	
+	'the messages queue for each client should be capped at max queue size': function(finished, prefix) {
+		var server = new Server({
+			maxQueueSize: 3,
+			onRequest: {
+				addListener: function(fn) {
+					fn({to: 'client_identifier', type: 'put'}, {tab: { id: 1 } });
+				}
+			}
+		});
+		
+		server.handleMessage({to: 'client_identifier', type: 'put', body: {value: 1}}, {tab: { id: 1 } });
+		server.handleMessage({to: 'client_identifier', type: 'put', body: {value: 2}}, {tab: { id: 1 } });
+		server.handleMessage({to: 'client_identifier', type: 'put', body: {value: 3}}, {tab: { id: 1 } });
+		server.handleMessage({to: 'client_identifier', type: 'put', body: {value: 4}}, {tab: { id: 1 } });
+
+		equal(server.messages['tab_1']['client_identifier'].length, 3, prefix + ' messages should be capped at three messages');
+		equal(server.messages['tab_1']['client_identifier'][0].body.value, 2, prefix + ' wrong value in queue');
+		equal(server.messages['tab_1']['client_identifier'][2].body.value, 4, prefix + ' wrong value in queue');
+		finished();
 	}
 };
