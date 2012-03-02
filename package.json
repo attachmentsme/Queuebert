@@ -1,0 +1,23 @@
+{
+  "name": "Queuebert",
+  "directories": {
+    "lib": "./lib"
+  },
+  "version": "1.0.0",
+  "author": "Ben Coe <bencoe@gmail.com>",
+  "engines": [
+    "node"
+  ],
+  "description": "A queue for communicating between iframes and background.html in your chrome extension.",
+  "keywords": [
+    "chrome",
+    "queuebert"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/attachmentsme/Queuebert.git"
+  },
+  "dependencies": {
+    "micro-test": "1.0.0"
+  }
+}
